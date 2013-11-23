@@ -6,7 +6,7 @@ from sklearn.decomposition import PCA
 import nose.tools as nt
 import numpy.testing as npt
 
-from .. import glm
+from moss import glm
 
 
 def test_hrf_sum():
@@ -72,7 +72,7 @@ def test_hrf_convolution():
 
     data2 = np.ones(512)
     conv2 = hrf.convolve(data2)
-    npt.assert_almost_equal(float(conv2.ix[32:].mean()), 1)
+    npt.assert_almost_equal(float(conv2.ix[-200:].mean()), 1)
 
 
 def test_hrf_frametimes():

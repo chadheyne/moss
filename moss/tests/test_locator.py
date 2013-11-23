@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from nipype.testing import assert_equal
 
-from .. import locator
+from moss import locator
 
 
 def test_locate_peaks():
@@ -16,7 +16,7 @@ def test_locate_peaks():
 
     for coord, res in challenge:
         res = dict(zip(["MaxProb Region", "Prob"], list(res)))
-        print res
+        print(res)
         res = pd.DataFrame(res, index=[0])
         yield assert_equal, np.array(res), np.array(locator.locate_peaks(coord))
 

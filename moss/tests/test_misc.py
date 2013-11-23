@@ -1,7 +1,7 @@
 import numpy as np
 from nose.tools import assert_equal
 
-from .. import misc
+from moss import misc
 
 
 def test_sig_stars():
@@ -23,9 +23,9 @@ def test_iqr():
 def test_product_index():
     """Test the product_index function."""
     who = ["josh", "toby"]
-    what = range(3)
+    what = list(range(3))
     idx = misc.product_index([who, what], names=["who", "what"])
     assert_equal(idx.names, ["who", "what"])
     assert_equal(idx.values.tolist(),
-                 [("josh", 0L), ("josh", 1L), ("josh", 2L),
-                  ("toby", 0L), ("toby", 1L), ("toby", 2L)])
+                 [("josh", 0), ("josh", 1), ("josh", 2),
+                  ("toby", 0), ("toby", 1), ("toby", 2)])

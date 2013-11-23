@@ -2,7 +2,7 @@ from __future__ import division
 import numpy as np
 import nose.tools as nt
 import numpy.testing as npt
-from .. import design
+from moss import design
 
 
 def test_cb1_ideal():
@@ -18,7 +18,7 @@ def test_cb1_ideal():
     npt.assert_array_equal(ideal, design.cb1_ideal(evs))
 
     # Ensure matrix size
-    evs = range(5)
+    evs = list(range(5))
     nt.assert_equal((5, 5), design.cb1_ideal(evs).shape)
 
 

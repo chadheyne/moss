@@ -1,7 +1,11 @@
 from __future__ import division
 
-from StringIO import StringIO
-import cPickle
+try:
+    from StringIO import StringIO
+    import cPickle
+except:  # PY3
+    from io import StringIO
+    import pickle as cPickle
 import numpy as np
 import scipy as sp
 import pandas as pd
@@ -361,7 +365,7 @@ class DesignMatrix(object):
             res = hrf_model.convolve(self._hires_base[cond],
                                      self._hires_frametimes,
                                      cond)
-            for key, vals in res.iteritems():
+            for key, vals in res.items():
                 self._hires_conditions[key] = vals
 
     def _subsample_condition_matrix(self):
@@ -370,7 +374,7 @@ class DesignMatrix(object):
                                    index=self.frametimes)
 
         frametime_midpoints = self.frametimes + self.tr / 2
-        for key, vals in self._hires_conditions.iteritems():
+        for key, vals in self._hires_conditions.items():
             resampler = sp.interpolate.interp1d(self._hires_frametimes, vals,
                                                 kind="nearest")
             condition_X[key] = resampler(frametime_midpoints)
@@ -389,7 +393,7 @@ class DesignMatrix(object):
             names = pd.Series([name_base + "_%d"] * n) % range(n)
             comp = pd.DataFrame(comp, self.frametimes, names)
 
-        if names.tolist() == range(n):
+        if names.tolist() == list(range(n)):
             names = pd.Series([name_base + "_%d"] * n) % range(n)
             comp.columns = names
 
@@ -406,7 +410,7 @@ class DesignMatrix(object):
     def _highpass_filter(self, mat, cutoff):
         """Highpass-filter each column in mat."""
         F = fsl_highpass_matrix(self._ntp, cutoff, self.tr)
-        for key, vals in mat.iteritems():
+        for key, vals in mat.items():
             mat[key] = np.dot(F, vals)
         return mat
 
@@ -463,7 +467,7 @@ class DesignMatrix(object):
         n_conf = corrs.shape[0]
         colors = sns.husl_palette(n_conf)
 
-        for i, (cond, conf_corrs) in enumerate(corrs.iteritems()):
+        for i, (cond, conf_corrs) in enumerate(corrs.items()):
             barpos = np.linspace(i, i + 1, n_conf + 1)[:-1]
             bars = ax.bar(barpos, conf_corrs.abs(), width=1 / n_conf,
                           color=colors, linewidth=0)
@@ -623,7 +627,7 @@ def fsl_highpass_matrix(ntp, cutoff, tr=2):
 
     H = np.zeros((ntp, ntp))
     X = np.column_stack((np.ones(ntp), np.arange(ntp)))
-    for k in xrange(ntp):
+    for k in range(ntp):
         W = np.diag(K[k])
         hat = np.dot(np.dot(X, np.linalg.pinv(np.dot(W, X))), W)
         H[k] = hat[k]

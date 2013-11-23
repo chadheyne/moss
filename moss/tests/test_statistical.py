@@ -9,7 +9,7 @@ import numpy.testing as npt
 import nose.tools
 from nose.tools import assert_equal, assert_almost_equal, raises
 
-from .. import statistical as stat
+from moss import statistical as stat
 
 
 a_norm = np.random.randn(100)
@@ -211,7 +211,7 @@ def test_randomize_onesample():
 
 def test_randomize_onesample_range():
     """Make sure that output is bounded between 0 and 1."""
-    for i in xrange(100):
+    for i in range(100):
         a = np.random.normal(np.random.randint(-10, 10),
                              np.random.uniform(.5, 3), 100)
         t, p = stat.randomize_onesample(a, 100)

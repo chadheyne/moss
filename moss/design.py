@@ -35,7 +35,7 @@ def optimize_event_schedule(n_cat, n_total, max_repeat,
     schedules = []
     bal_costs = np.zeros(n_search)
     cb1_costs = np.zeros(n_search)
-    for i in xrange(n_search):
+    for i in range(n_search):
         sched = make_schedule(n_cat, n_total, max_repeat)
         schedules.append(sched)
 
@@ -78,7 +78,7 @@ def make_schedule(n_cat, n_total, max_repeat):
 
     # Generate the schedule
     schedule = []
-    for i in xrange(n_total):
+    for i in range(n_total):
         trailing_set = set(schedule[-max_repeat:])
         # Check if we're at our repeat limit
         if len(trailing_set) == 1:
@@ -128,7 +128,7 @@ def cb1_optimize(ev_count, n_search=1000, constraint=None):
     # Create n_search random schedules and pick the best one
     sched_costs = np.zeros(n_search)
     best_sched = sched
-    for i in xrange(n_search):
+    for i in range(n_search):
         iter_sched = sched[permutation(int(n_total))]
         if not constraint(iter_sched):
             continue
