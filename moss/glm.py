@@ -365,7 +365,7 @@ class DesignMatrix(object):
             res = hrf_model.convolve(self._hires_base[cond],
                                      self._hires_frametimes,
                                      cond)
-            for key, vals in res.items():
+            for key, vals in res.iteritems():
                 self._hires_conditions[key] = vals
 
     def _subsample_condition_matrix(self):
@@ -374,11 +374,10 @@ class DesignMatrix(object):
                                    index=self.frametimes)
 
         frametime_midpoints = self.frametimes + self.tr / 2
-        for key, vals in self._hires_conditions.items():
+        for key, vals in self._hires_conditions.iteritems():
             resampler = sp.interpolate.interp1d(self._hires_frametimes, vals,
                                                 kind="nearest")
             condition_X[key] = resampler(frametime_midpoints)
-
         return condition_X
 
     def _validate_component(self, comp, name_base):
@@ -410,7 +409,7 @@ class DesignMatrix(object):
     def _highpass_filter(self, mat, cutoff):
         """Highpass-filter each column in mat."""
         F = fsl_highpass_matrix(self._ntp, cutoff, self.tr)
-        for key, vals in mat.items():
+        for key, vals in mat.iteritems():
             mat[key] = np.dot(F, vals)
         return mat
 
@@ -467,7 +466,7 @@ class DesignMatrix(object):
         n_conf = corrs.shape[0]
         colors = sns.husl_palette(n_conf)
 
-        for i, (cond, conf_corrs) in enumerate(corrs.items()):
+        for i, (cond, conf_corrs) in enumerate(corrs.iteritems()):
             barpos = np.linspace(i, i + 1, n_conf + 1)[:-1]
             bars = ax.bar(barpos, conf_corrs.abs(), width=1 / n_conf,
                           color=colors, linewidth=0)
